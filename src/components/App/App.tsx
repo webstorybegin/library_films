@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { SwitchSelect } from "components/ui/SwitchSelect/SwitchSelect";
 import { Movie } from "components/Movie/Movie";
+import { fetchMovies } from "components/hooks/fetchMovies";
 
 import { makeStyles } from "@material-ui/styles";
 import { TextField } from "@mui/material";
@@ -36,50 +37,23 @@ const useStyles = makeStyles({
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [looked, setLooked] = useState([]);
   const [searchMovies, setSearchMovies] = useState("");
   const [theme, setTheme] = useState(false);
 
-  const API = "https://api.themoviedb.org/3/";
-  const API_KEY = "&api_key=c5449791ae3cc7b4aaf0eb3cb27cac42";
-  const MOVIE_SEARCH = `${API}search/movie?${API_KEY}&query=`;
-  
-  const handleOnChange = (e) => {
-    setSearchMovies(e.target.value);
-
-    fetch(MOVIE_SEARCH + searchMovies)
-      .then((res) => res.json())
-      .then((res) => {
-        setMovies(res.results);
-      });
-  };
-
   useEffect(() => {
-    const movieLooked = JSON.parse(localStorage.getItem("looked-movies"));
+    const fetchData = async () => {
+      try {
+        const data = await fetchMovies(searchMovies);
+        setMovies(data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
 
-    if (movieLooked) {
-      setLooked(movieLooked);
-    }
-  }, []);
+    const debounceTimer = setTimeout(fetchData, 500);
 
-  const saveLocalStorage = (items) => {
-    localStorage.setItem("looked-movies", JSON.stringify(items));
-  };
-
-  const addLookedMovie = (movie) => {
-    const newLookedMovieList = [...looked, movie];
-    setLooked(newLookedMovieList);
-    saveLocalStorage(newLookedMovieList);
-  };
-
-  const removeLookedMovie = (movie) => {
-    const newLookedMovieList = looked.filter(
-      (looked) => looked.imdbID !== movie.imdbID
-    );
-
-    setLooked(newLookedMovieList);
-    saveLocalStorage(newLookedMovieList);
-  };
+    return () => clearTimeout(debounceTimer);
+  }, [searchMovies]);
 
   const classes = useStyles();
 
@@ -94,13 +68,16 @@ function App() {
           label="Search..."
           variant="filled"
           value={searchMovies}
-          onChange={handleOnChange}
+          onChange={(e) => {
+            setSearchMovies(e.target.value);
+          }}
           className={classes.search}
         />
         <SwitchSelect theme={theme} setTheme={setTheme} />
       </header>
       <div className={classes.containerMovies}>
-        {movies && movies.map((movie) => <Movie key={movie.id} {...movie} />)}
+        {Array.isArray(movies) &&
+          movies.map((movie) => <Movie key={movie.id} {...movie} />)}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
+import imgNotFound from "../../resources/img/imgNotFound.png";
 
 const useStyles = makeStyles({
   card: {
@@ -9,17 +10,18 @@ const useStyles = makeStyles({
     marginRight: 20,
     marginBottom: 10,
     overflowY: "hidden",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    color: "white",
+    borderRadius: 20,
+    color: "rgba(255, 255, 255, 0.62)",
     transition: ".2s ease-in-out 0s",
+    cursor: "pointer",
     "&:hover > div": {
       transform: "translateY(0)",
     },
     "& img": {
       maxWidth: "100%",
-      borderTopLeftRadius: 10,
-      borderTopRightRadius: 10,
+      maxHeight: "100%",
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
       marginBottom: 10,
     },
   },
@@ -34,10 +36,9 @@ const useStyles = makeStyles({
       marginRight: 5,
     },
     "& p": {
-      width: 40,
-      height: 40,
+      width: 50,
+      height: 50,
       fontSize: 30,
-      padding: 15,
       fontWeight: 300,
       borderRadius: 10,
       display: "flex",
@@ -46,7 +47,7 @@ const useStyles = makeStyles({
     },
   },
   overview: {
-    cursor: "default",
+    width: "100%",
     position: "absolute",
     opacity: 0.95,
     top: 0,
@@ -71,7 +72,7 @@ const useStyles = makeStyles({
     "& img": {
       marginTop: 10,
       boxShadow: "-1px -3px 5px #000",
-      borderRadius: 10,
+      borderRadius: 20,
     },
   },
 });
@@ -85,19 +86,27 @@ export const Movie = ({
   vote_average,
 }) => {
   const IMG_URL = "https://image.tmdb.org/t/p/w500";
+  const poster = !`${IMG_URL}${poster_path}`.endsWith("null")
+    ? IMG_URL + poster_path
+    : imgNotFound;
+  const descriptionPoster = !`${IMG_URL}${backdrop_path}`.endsWith("null")
+    ? IMG_URL + backdrop_path
+    : imgNotFound;
 
   const classes = useStyles();
 
   return (
     <div className={classes.card}>
-      <img src={IMG_URL + poster_path} />
+      <img src={poster} alt={title} />
       <div className={classes.cardInfo}>
         <h1>{title}</h1>
         <p
           style={
-            vote_average <= 4 ? { background: "#800020" } : 
-            vote_average <= 7 ? { background: "#b38c17" } : 
-            { background: "#51612b" }
+            vote_average <= 4
+              ? { background: "#800020" }
+              : vote_average <= 7
+              ? { background: "#b38c17" }
+              : { background: "#51612b" }
           }
         >
           {vote_average}
@@ -107,8 +116,8 @@ export const Movie = ({
         <p>
           Release <br /> {release_date}
         </p>
-        {overview}
-        <img src={IMG_URL + backdrop_path} />
+        {overview !== "" ? overview : "No description of the movie"}
+        <img src={descriptionPoster} alt={title} />
       </div>
     </div>
   );
