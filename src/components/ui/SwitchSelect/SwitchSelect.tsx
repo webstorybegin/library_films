@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
-import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -44,7 +44,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
   "& .MuiSwitch-track": {
     opacity: 1,
-    backgroundColor: theme.palette.mode === "dark" ? "#fff" : "#fff",
+    backgroundColor: theme.palette.mode === "dark" ? "#8d8d8d" : "#8d8d8d",
     borderRadius: 20 / 2,
   },
 }));
@@ -53,7 +53,9 @@ export const SwitchSelect = ({ theme, setTheme }) => {
   return (
     <div>
       <FormControlLabel
-        control={<MaterialUISwitch onChange={() => setTheme(!theme)} sx={{ m: 1 }} />}
+        control={
+          <MaterialUISwitch onChange={() => setTheme(!theme)} sx={{ m: 1 }} />
+        }
         label={""}
       />
     </div>

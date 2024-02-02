@@ -14,10 +14,11 @@ const useStyles = makeStyles({
     margin: "0 auto",
   },
   containerMovies: {
+    maxWidth: 1500,
+    margin: "0 auto",
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    padding: 20,
   },
   header: {
     display: "flex",
@@ -25,9 +26,6 @@ const useStyles = makeStyles({
     margin: "0 auto",
     textAlign: "center",
     padding: "20px 0",
-    "& input": {
-      background: "#fff",
-    },
   },
   search: {
     width: 300,
@@ -59,7 +57,9 @@ function App() {
 
   return (
     <div
-      style={theme === false ? { background: "#fff" } : { background: "#333" }}
+      style={
+        theme === false ? { background: "#a7a7a7" } : { background: "#000" }
+      }
       className={classes.container}
     >
       <header className={classes.header}>
