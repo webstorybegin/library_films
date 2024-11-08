@@ -172,24 +172,33 @@ const useStyles = makeStyles({
   },
   navigationItem: {
     position: "relative",
-    color: "#ffffff",
-    opacity: 0.7,
-    fontSize: 16,
-    minHeight: 24,
     display: "flex",
     alignItems: "center",
-    cursor: "pointer",
-    transition: "transform 0.1s ease 0s",
+    "& img": {
+      marginRight: 20,
+    },
+    "& a": {
+      display: "inline-block",
+      color: "#ffffff",
+      opacity: 0.7,
+      fontSize: 16,
+      cursor: "pointer",
+      transition: "all .3s ease 0s",
+    },
     "&:not(:last-child)": {
       marginBottom: 30,
     },
     "&:hover": {
       opacity: 1,
     },
-    "& img": {
-      marginRight: 20,
+    "&:has(a.active) a": {
+      color: "yellow",
+    },
+    "&:has(a.active) img": {
+      transform: "scale(1.6)",
     },
   },
+
   navigationItemIndent: {
     marginBottom: "122px !important",
   },
@@ -277,9 +286,8 @@ function App() {
                 )}
                 onClick={() => handleNavigationClick(value.path)}
               >
-                <NavLink to={value.path}></NavLink>
                 {value.icon}
-                {value.text}
+                <NavLink to={value.path}>{value.text}</NavLink>
               </li>
             ))}
           </ul>
