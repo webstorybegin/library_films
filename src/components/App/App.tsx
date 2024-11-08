@@ -1,46 +1,64 @@
 // Import React
-import { useEffect, useState, FC } from "react";
-// Import components
-import { Image, Search, Spinner, SwitchSelect, Movie } from "components";
+import { useState, FC } from "react";
+import { Routes, Route, useNavigate, NavLink } from "react-router-dom";
 
-// Import hooks
-import { fetchMovies } from "components/hooks/fetchMovies";
+// Import components
+import { Image, SwitchSelect } from "components";
+
 // Import styles
 import { makeStyles } from "@material-ui/styles";
 import cn from "classnames";
+import {
+  Home,
+  Favorites,
+  Trending,
+  Coming,
+  Community,
+  Social,
+  Settings,
+  Logout,
+} from "components";
 
 const navBar = {
   home: {
     icon: <Image.IconHome />,
     text: "Home",
+    path: "/home",
   },
   favorites: {
     icon: <Image.IconFavorites />,
     text: "Favorites",
+    path: "/favorites",
   },
   trending: {
     icon: <Image.IconTrending />,
     text: "Trending",
+    path: "/trending",
   },
   soon: {
     icon: <Image.IconSoon />,
     text: "Coming Soon",
+    path: "/coming",
   },
   community: {
     icon: <Image.IconCommunity />,
     text: "Community",
+    path: "/community",
   },
   social: {
     icon: <Image.IconSocial />,
     text: "Social",
+    path: "/social",
   },
   settings: {
     icon: <Image.IconSettings />,
     text: "Settings",
+    path: "/settings",
   },
   logout: {
     icon: <Image.IconLogout />,
     text: "Logout",
+    path: "/logout",
   },
 };
 
@@ -51,7 +69,6 @@ const useStyles = makeStyles({
     margin: "0 auto",
     WebkitUserSelect: "none",
     "& label": {
-      // SwitchSelect
       position: "absolute",
       right: "29%",
       top: 45,
@@ -125,28 +142,23 @@ const useStyles = makeStyles({
   sideBarBtn: {
     left: 10,
   },
-  containerMovies: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    width: "100%",
-    padding: "110px 20px 0px",
-  },
-  search: {
-    width: 300,
-    fontSize: 35,
-  },
   wrapper: {
     display: "flex",
   },
   navigation: {
     minHeight: "100vh",
-    width: 350,
+    width: "20%",
+    minWidth: "20%",
     background: "#21201E",
     paddingTop: 40,
     paddingRight: 40,
     paddingLeft: 40,
     borderRight: "1px solid transparent",
+  },
+  content: {
+    width: "80%",
+    minHeight: "100vh",
+    paddingTop: "40px",
   },
   navigationDark: {
     borderRight: "1px solid #444444",
@@ -198,63 +210,20 @@ interface CommonProps {
 interface AddIntentProps extends CommonProps {
   key: string;
 }
-interface generateNavigationItemsProps extends CommonProps {}
 
 const AddIndent: FC<AddIntentProps> = ({ key, classes }) => {
   return key === "soon" || key === "social" ? classes.navigationItemIndent : "";
 };
 
-const generateNavigationItems: FC<generateNavigationItemsProps> = ({
-  classes,
-}) => {
-  return (
-    <ul>
-      {Object.entries(navBar).map(([key, value]) => (
-        <li
-          key={key}
-          className={cn(classes.navigationItem, AddIndent({ key, classes }))}
-        >
-          {value.icon}
-          {value.text}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [searchMovies, setSearchMovies] = useState("");
   const [theme, setTheme] = useState(false);
-  const [moviesFound, setMoviesFound] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (searchMovies.trim() === "") {
-        setMovies([]);
-        setLoading(false);
-        return;
-      }
-      setLoading(true);
-
-      try {
-        const data = await fetchMovies(searchMovies);
-        setMovies(data);
-        setMoviesFound(data.length > 0);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      } finally {
-        setTimeout(() => setLoading(false), 1000);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchData, 500);
-
-    return () => clearTimeout(debounceTimer);
-  }, [searchMovies]);
-
   const classes = useStyles();
+  const navigate = useNavigate();
+
+  const handleNavigationClick = (path) => {
+    console.log(path);
+    navigate(path);
+  };
 
   return (
     <div
@@ -289,10 +258,6 @@ function App() {
         </div>
       </div>
       <SwitchSelect theme={theme} setTheme={setTheme} />
-      <Search
-        onChange={(e: any) => setSearchMovies(e.target.value)}
-        theme={theme}
-      />
       <div className={classes.wrapper}>
         <div
           className={
@@ -302,18 +267,34 @@ function App() {
           }
         >
           <Image.AppLogo className={classes.navigationLogo} />
-          {generateNavigationItems({ classes })}
-        </div>
-        <div className={classes.containerMovies}>
-          {loading && <Spinner theme={theme} />}
-          {!loading &&
-            moviesFound &&
-            movies.map((movie) => (
-              <Movie key={movie.id} theme={theme} {...movie} />
+          <ul>
+            {Object.entries(navBar).map(([key, value]) => (
+              <li
+                key={key}
+                className={cn(
+                  classes.navigationItem,
+                  AddIndent({ key, classes })
+                )}
+                onClick={() => handleNavigationClick(value.path)}
+              >
+                <NavLink to={value.path}></NavLink>
+                {value.icon}
+                {value.text}
+              </li>
             ))}
-          {!loading && !moviesFound && searchMovies.trim() !== "" && (
-            <Image.NotFoundAnimate className={classes.filmNotFound} />
-          )}
+          </ul>
+        </div>
+        <div className={classes.content}>
+          <Routes>
+            <Route path="/home" element={<Home theme={theme} />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/trending" element={<Trending />} />
+            <Route path="/coming" element={<Coming />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/social" element={<Social />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/logout" element={<Logout />} />
+          </Routes>
         </div>
       </div>
     </div>

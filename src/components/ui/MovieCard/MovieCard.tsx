@@ -75,9 +75,15 @@ const useStyles = makeStyles({
   },
   title: {
     position: "absolute",
-    bottom: -60,
-    color: "#ffffff",
+    bottom: -40,
     fontSize: 20,
+    marginLeft: "auto",
+  },
+  titleLight: {
+    color: "#333333",
+  },
+  titleDark: {
+    color: "#ffffff",
   },
   overview: {
     width: "100%",
@@ -112,7 +118,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const Movie = ({
+export const MovieCard = ({
   title,
   release_date,
   poster_path,
@@ -136,6 +142,8 @@ export const Movie = ({
     );
 
   const classes = useStyles();
+
+  console.log("theme", theme);
 
   const getVoteStyle = () => {
     switch (true) {
@@ -166,7 +174,14 @@ export const Movie = ({
         >
           {vote_average ? vote_average.toFixed(1) + " / 10" : ""}
         </p>
-        <p className={classes.title}>{title}</p>
+        <p
+          className={cn(
+            classes.title,
+            theme === true ? classes.titleDark : classes.titleLight
+          )}
+        >
+          {title}
+        </p>
       </div>
       <div className={classes.overview}>
         {overview !== "" ? overview : "No description of the movie"}
