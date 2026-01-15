@@ -1,0 +1,24 @@
+{
+  "appId": "com.example.myapp",
+  "productName": "Films Library",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    {
+      "from": "build",
+      "to": "build",
+      "filter": ["**/*"]
+    }
+  ],
+  "mac": {
+    "target": "dmg"
+  },
+  "win": {
+    "target": "nsis"
+  },
+  "extends": null,
+  "extraMetadata": {
+    "main": "electron/main.js"
+  }
+}
