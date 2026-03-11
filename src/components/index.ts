@@ -2,6 +2,7 @@ export * from "./ui";
 export * as Image from "./ui/Image";
 export {
   Home,
+  Search,
   Favorites,
   Trending,
   Coming,
@@ -9,4 +10,6 @@ export {
   Social,
   Settings,
   Logout,
+  Auth,
+  Account,
 } from "./navigation";

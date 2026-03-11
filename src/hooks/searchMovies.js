@@ -5,15 +5,15 @@ import {
   fetchMoviesByYear,
 } from "../helpers";
 
-export const searchMovies = async (query, type) => {
+export const searchMovies = async (query, type, page = 1) => {
   switch (type) {
     case SEARCH_TYPES.TITLE:
-      return await fetchMoviesByTitle(query);
+      return await fetchMoviesByTitle(query, page);
     case SEARCH_TYPES.GENRE:
-      return await fetchMoviesByGenre(query);
+      return await fetchMoviesByGenre(query, page);
     case SEARCH_TYPES.YEAR:
-      return await fetchMoviesByYear(query);
+      return await fetchMoviesByYear(query, page);
     default:
-      return [];
+      return { results: [], totalPages: 0 };
   }
 };

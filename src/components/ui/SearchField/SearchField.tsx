@@ -1,35 +1,50 @@
-// Import styles
 import { makeStyles } from "@material-ui/styles";
 import cn from "classnames";
-import { useEffect, useState } from "react";
-import { searchMovies } from "../../../hooks/searchMovies";
+import { useState, useEffect, useRef } from "react";
 
 const useStyles = makeStyles({
   search: {
-    position: "absolute",
-    top: 50,
-    left: "47%",
-    width: 300,
-    height: 40,
-    padding: 10,
+    flex: 1,
+    maxWidth: 400,
+    height: 48,
+    padding: "12px 20px",
     fontSize: 16,
-    borderRadius: 25,
-    border: "1px solid #21201E",
-    color: "#21201E",
-    backgroundColor: "#e9e9e9",
+    borderRadius: 8,
+    border: "1px solid",
+    transition: "all 0.2s ease",
+    fontWeight: 400,
+    letterSpacing: "0.01em",
+    fontFamily: "'Roboto', sans-serif",
+    "&:focus": {
+      outline: "none",
+      borderWidth: "2px",
+    },
+    "&::placeholder": {
+      opacity: 0.5,
+    },
   },
   searchSecond: {
     position: "absolute",
-    top: 150,
+    top: 120,
     left: "47%",
+    flex: "none",
+    width: 320,
   },
   searchLight: {
-    backgroundColor: "#e9e9e9",
+    backgroundColor: "#FFFFFF",
+    color: "#212121",
+    borderColor: "#E0E0E0",
+    "&:focus": {
+      borderColor: "#0AA3E4",
+    },
   },
   searchDark: {
-    backgroundColor: "#21201E",
-    color: "#e9e9e9",
-    border: "1px solid #e9e9e9",
+    backgroundColor: "#2D2C2A",
+    color: "#FFFFFF",
+    borderColor: "#424242",
+    "&:focus": {
+      borderColor: "#0AA3E4",
+    },
   },
 });
 
@@ -40,29 +55,47 @@ export const SearchField = ({
   variant = "",
 }: {
   type: {};
-  onResults: (data: any[]) => void;
+  onResults: (data: any[], query?: string) => void;
   darkTheme?: boolean;
   variant?: string;
 }) => {
   const classes = useStyles();
   const [query, setQuery] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
     if (query.trim() === "") {
-      onResults([]);
+      onResults([], "");
       return;
     }
-    const debounceTimer = setTimeout(async () => {
-      try {
-        const data = await searchMovies(query, type);
-        onResults(data);
-      } catch (err) {
-        console.error(err);
-      }
+
+    debounceRef.current = setTimeout(() => {
+      onResults([], query);
     }, 500);
 
-    return () => clearTimeout(debounceTimer);
-  }, [query, type, onResults]);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [query, type]);
+
+  useEffect(() => {
+    setQuery("");
+  }, [type]);
+
+  const getPlaceholder = () => {
+    switch (type) {
+      case "title":
+        return "Search by title (e.g., Avatar, Inception)";
+      case "genre":
+        return "Search by genre ID (e.g., 28 for Action, 35 for Comedy)";
+      case "year":
+        return "Search by year (e.g., 2023, 2024)";
+      default:
+        return `Search by ${type}`;
+    }
+  };
 
   return (
     <input
@@ -74,7 +107,7 @@ export const SearchField = ({
       name="search"
       type="text"
       value={query}
-      placeholder={`Search by ${type}`}
+      placeholder={getPlaceholder()}
       onChange={(e) => setQuery(e.target.value)}
     />
   );

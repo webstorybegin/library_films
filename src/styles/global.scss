@@ -1,72 +1,99 @@
-@import url("https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Quicksand:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap");
 
 * {
   padding: 0;
   margin: 0;
   border: 0;
 }
+
 *,
 *:before,
 *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 :focus,
 :active {
   outline: none;
 }
-a:focus,
-a:active {
-  outline: none;
-}
-nav,
-footer,
-header,
-aside {
-  display: block;
+
+:root {
+  --bg-main: #141414;
+  --bg-secondary: #181818;
+  --bg-card: #2f2f2f;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --text-primary: #ffffff;
+  --text-secondary: #d2d2d2;
+  --text-disabled: #808080;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-main: rgba(255, 255, 255, 0.2);
+  --accent: #e50914;
+  --nav-bg: #141414;
+  --card-hover: rgba(255, 255, 255, 0.15);
+  --scrollbar-thumb: #3a3a3a;
+  --scrollbar-hover: #4a4a4a;
 }
 
 html,
 body {
   height: 100%;
   width: 100%;
-  font-size: 100%;
-  line-height: 1;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
   min-width: 320px;
-  -ms-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: transparent;
+  color: var(--text-primary);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  border-radius: 12px;
+
+  @media (min-width: 2560px) {
+    font-size: 20px;
+  }
+  @media (min-width: 3840px) {
+    font-size: 28px;
+  }
+}
+
+* {
   -webkit-tap-highlight-color: transparent;
 }
+
+#root {
+  background: transparent;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: none;
+}
+
 input,
-button,
 textarea {
   font-family: inherit;
-  resize: none;
 }
+
 input::-webkit-search-decoration,
 input::-webkit-search-cancel-button,
 input::-webkit-search-results-button,
-input::-webkit-search-results-decoration input::-ms-clear {
+input::-webkit-search-results-decoration,
+input::-ms-clear {
   display: none;
 }
-button {
-  cursor: pointer;
-}
-button::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-a,
-a:visited {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: none;
-}
+
 ul,
 li {
   list-style: none;
@@ -74,13 +101,56 @@ li {
 
 img {
   vertical-align: top;
+  max-width: 100%;
 }
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-size: inherit;
   font-weight: inherit;
+}
+
+/* Netflix-style scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+
+  @media (min-width: 2560px) {
+    width: 16px;
+    height: 16px;
+  }
+  @media (min-width: 3840px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+  &:hover {
+    background: var(--scrollbar-hover);
+  }
+}
+
+/* Smooth transitions for interactive elements */
+a,
+button,
+input,
+textarea {
+  transition: all 0.2s ease;
+}
+
+/* Focus styles for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

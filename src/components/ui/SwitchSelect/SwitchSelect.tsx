@@ -3,9 +3,9 @@ import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
-  width: 70,
+  width: 62,
   height: 34,
-  padding: 10,
+  padding: 7,
   "& .MuiSwitch-switchBase": {
     margin: 1,
     padding: 0,
@@ -13,7 +13,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     "&.Mui-checked": {
       color: "#fff",
       transform: "translateX(22px)",
-      border: "1px solid #e9e9e9",
       "& .MuiSwitch-thumb:before": {
         backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
           "#fff"
@@ -21,13 +20,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       },
       "& + .MuiSwitch-track": {
         opacity: 1,
-        backgroundColor: "#333333",
-        border: "1px solid #e9e9e9",
+        backgroundColor: "#424242",
       },
     },
   },
   "& .MuiSwitch-thumb": {
-    backgroundColor: "#001e3c",
+    backgroundColor: "#212121",
     width: 32,
     height: 32,
     "&:before": {
@@ -46,7 +44,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
   "& .MuiSwitch-track": {
     opacity: 1,
-    backgroundColor: theme.palette.mode === "dark" ? "#8d8d8d" : "#8d8d8d",
+    backgroundColor: "#BDBDBD",
     borderRadius: 20 / 2,
   },
 }));
