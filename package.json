@@ -1,9 +1,11 @@
 {
-  "name": "react-app",
-  "version": "0.1.0",
+  "name": "library-films",
+  "version": "1.0.0",
   "private": true,
   "main": "electron/main.js",
-  "homepage": "https://webstorybegin.github.io/films_library/",
+  "homepage": "./",
+  "author": "Dmytro",
+  "description": "Netflix-style movie library app",
   "dependencies": {
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -19,11 +21,14 @@
     "start": "react-scripts start",
     "electron": "electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
-    "build": "react-scripts build && electron-builder",
+    "build:react": "react-scripts build",
+    "build:electron": "electron-builder",
+    "build": "npm run build:react && npm run build:electron",
+    "build:portable": "npm run build:react && electron-builder --win portable",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build",
-    "predeploy": "npm run build"
+    "predeploy": "npm run build:react"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +48,32 @@
       "last 1 safari version"
     ]
   },
+  "build": {
+    "appId": "com.dmytro.library-films",
+    "productName": "LibraryFilms",
+    "extends": null,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "build/**/*",
+      "electron/**/*"
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "electron/resources/icons/app_icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
   "devDependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
@@ -52,9 +83,12 @@
     "@types/react": "^17.0.38",
     "classnames": "^2.5.1",
     "concurrently": "^8.2.2",
+    "electron": "^36.3.1",
     "electron-builder": "^24.13.3",
     "gh-pages": "^4.0.0",
+    "png-to-ico": "^3.0.1",
     "sass": "^1.75.0",
-    "typescript": "^5.4.5"
+    "sharp": "^0.34.5",
+    "typescript": "^4.9.5"
   }
 }

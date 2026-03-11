@@ -10,6 +10,12 @@
       "icons": ["resources/icons/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.svg", "src/custom.d.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.svg",
+    "src/custom.d.ts",
+    "src/hooks/searchMovies.js"
+  ],
   "exclude": ["node_modules"]
 }

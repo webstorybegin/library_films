@@ -1,8 +1,8 @@
 export * from "./ui";
 export * as Image from "./ui/Image";
-export { MovieCard } from "./ui/MovieCard/MovieCard";
 export {
   Home,
+  Search,
   Favorites,
   Trending,
   Coming,
@@ -10,4 +10,6 @@ export {
   Social,
   Settings,
   Logout,
-} from "./nav";
+  Auth,
+  Account,
+} from "./navigation";

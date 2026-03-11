@@ -16,14 +16,14 @@ const useStyles = makeStyles({
     height: 80,
     margin: "auto auto",
     transform: "translateX(-50px)",
-    borderRadius: 8,
-    border: "3px solid #e9e9e9",
+    borderRadius: 4,
+    border: "none",
   },
   squareLight: {
-    border: "1px solid transparent",
+    border: "none",
   },
   squareDark: {
-    border: "1px solid #e9e9e9",
+    border: "none",
   },
   square1: {
     animation:
